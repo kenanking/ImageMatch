@@ -26,11 +26,11 @@ int main(int argc, char **argv)
     //     std::cout << "使用方式：ImageMatch img1 img2" << std::endl;
     //     return 1;
     // }
-    // std::string img_path_1 = "../img/LOR50.bmp";
-    // std::string img_path_2 = "../img/LOR49.bmp";
+    std::string img_path_1 = "../img/LOR50.bmp";
+    std::string img_path_2 = "../img/LOR49.bmp";
     // std::string img_path_1 = "../img/star.jpg";
-    std::string img_path_1 = "../img/yosemite2.jpg";
-    std::string img_path_2 = "../img/yosemite3.jpg";
+    // std::string img_path_1 = "../img/yosemite1.jpg";
+    // std::string img_path_2 = "../img/yosemite2.jpg";
 
     //-- 读取图像
     cv::Mat img_1 = cv::imread(img_path_1, CV_LOAD_IMAGE_COLOR);
@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     TicToc t = TicToc();
     // corners_1 = photogrammetry::HarrisCornerDetect(img_1, 80);
     // corners_2 = photogrammetry::HarrisCornerDetect(img_2, 80);
-    corners_1 = photogrammetry::MoravecCornerDetect(img_1, 5, 1000);
-    corners_2 = photogrammetry::MoravecCornerDetect(img_2, 5, 1000);
+    corners_1 = photogrammetry::MoravecCornerDetect(img_1, 5, 700);
+    corners_2 = photogrammetry::MoravecCornerDetect(img_2, 5, 700);
     // corners_1 = photogrammetry::SIFTCornerDetect(img_1);
     // corners_2 = photogrammetry::SIFTCornerDetect(img_2);
     double time = t.toc();
@@ -61,6 +61,8 @@ int main(int argc, char **argv)
     cv::Mat img_1_corner, img_2_corner;
     photogrammetry::DrawCorners(img_1, img_1_corner, corners_1);
     photogrammetry::DrawCorners(img_2, img_2_corner, corners_2);
+    cv::imwrite("../result/LOR50_corner.jpg", img_1_corner);
+    cv::imwrite("../result/LOR49_corner.jpg", img_2_corner);
     cv::imshow("img_1 角点检测后图像", img_1_corner);
     cv::imshow("img_2 角点检测后图像", img_2_corner);
     cv::waitKey(0);
@@ -68,7 +70,7 @@ int main(int argc, char **argv)
     // 进行相关系数匹配
     photogrammetry::CorrelationMatcher corrMatcher;
     corrMatcher.setWindowSize(25);
-    corrMatcher.setThreshold(0.80);
+    corrMatcher.setThreshold(0.85);
 
     std::vector<photogrammetry::Match> corrMatches;
 
@@ -79,6 +81,9 @@ int main(int argc, char **argv)
 
     std::cout << "相关系数匹配用时：" << time << "秒" << std::endl;
     std::cout << "相关系数匹配到同名点：" << corrMatches.size() << std::endl;
+
+    std::ofstream ofs;
+    ofs.open("../result/LOR_corr_result.txt");
     for (auto match : corrMatches)
     {
         std::cout << "srcX: " << match.srcPt.x
@@ -86,12 +91,19 @@ int main(int argc, char **argv)
                   << "\tdstX: " << match.dstPt.x
                   << "\tdstY: " << match.dstPt.y
                   << "\tidx: " << match.dist << std::endl;
+        ofs << "srcX: " << match.srcPt.x
+            << "\tsrcY: " << match.srcPt.y
+            << "\tdstX: " << match.dstPt.x
+            << "\tdstY: " << match.dstPt.y
+            << "\tidx: " << match.dist << std::endl;
     }
+    ofs.close();
     std::cout << std::endl;
 
     // 显示匹配结果
     cv::Mat img_match;
     corrMatcher.drawMatches(img_1, img_2, img_match, corrMatches);
+    cv::imwrite("../result/LOR_corr_match.jpg", img_match);
     cv::imshow("匹配结果：", img_match);
     cv::waitKey(0);
 
@@ -111,6 +123,8 @@ int main(int argc, char **argv)
 
     std::cout << "最小二乘匹配用时：" << time << "秒" << std::endl;
     std::cout << "最小二乘匹配到同名点：" << lsqMatches.size() << std::endl;
+
+    ofs.open("../result/LOR_lsq_result.txt");
     for (auto match : lsqMatches)
     {
         std::cout << "srcX: " << match.srcPt.x
@@ -118,7 +132,14 @@ int main(int argc, char **argv)
                   << "\tdstX: " << match.dstPt.x
                   << "\tdstY: " << match.dstPt.y
                   << "\tidx: " << match.dist << std::endl;
+
+        ofs << "srcX: " << match.srcPt.x
+            << "\tsrcY: " << match.srcPt.y
+            << "\tdstX: " << match.dstPt.x
+            << "\tdstY: " << match.dstPt.y
+            << "\tidx: " << match.dist << std::endl;
     }
+    ofs.close();
     std::cout << std::endl;
 
     std::cout << "运行结束!" << std::endl;
