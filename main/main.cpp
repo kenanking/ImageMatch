@@ -56,6 +56,7 @@ int main(int argc, char **argv)
     std::cout << "特征点提取用时：" << time << "秒" << std::endl;
     std::cout << "图像1中特征点数量：" << corners_1.size() << std::endl;
     std::cout << "图像2中特征点数量：" << corners_2.size() << std::endl;
+    std::cout << std::endl;
 
     // 显示角点
     cv::Mat img_1_corner, img_2_corner;
@@ -68,6 +69,7 @@ int main(int argc, char **argv)
     cv::waitKey(0);
 
     // 进行相关系数匹配
+    std::cout << "开始相关系数匹配：" << std::endl;
     photogrammetry::CorrelationMatcher corrMatcher;
     corrMatcher.setWindowSize(25);
     corrMatcher.setThreshold(0.85);
@@ -81,6 +83,7 @@ int main(int argc, char **argv)
 
     std::cout << "相关系数匹配用时：" << time << "秒" << std::endl;
     std::cout << "相关系数匹配到同名点：" << corrMatches.size() << std::endl;
+    std::cout << std::endl;
 
     std::ofstream ofs;
     ofs.open("../result/LOR_corr_result.txt");

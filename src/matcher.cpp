@@ -117,8 +117,13 @@ namespace photogrammetry
 
         double r = windowSize / 2;
         int num = 0;
+
+        int total = srcPts.size();
+        ProgressBar progressBar(total, 70, '#', '-');
+
         for (cv::Point srcPt : srcPts)
         {
+            ++progressBar;
             if (isVaildPoint(srcImgCopy, srcPt))
             {
                 // 使用ROI从原图中切出一个窗口
@@ -153,9 +158,14 @@ namespace photogrammetry
                     matches.push_back(match);
                 }
             }
-            std::cout << "已完成第 " << num << " 个点" << std::endl;
+            if (num % 10 == 0)
+            {
+                progressBar.display();
+            }
+
             num++;
         }
+        progressBar.done();
     }
 
     /// 改进的同名点匹配
@@ -176,8 +186,13 @@ namespace photogrammetry
 
         double r = windowSize / 2;
         int num = 0;
+
+        int total = srcPts.size();
+        ProgressBar progressBar(total, 70, '#', '-');
+
         for (cv::Point srcPt : srcPts)
         {
+            ++progressBar;
             if (isVaildPoint(srcImgCopy, srcPt))
             {
                 // 使用ROI从原图中切出一个窗口
@@ -213,9 +228,15 @@ namespace photogrammetry
                     matches.push_back(match);
                 }
             }
-            std::cout << "已完成第 " << num << " 个点" << std::endl;
+
+            if (num % 10 == 0)
+            {
+                progressBar.display();
+            }
+
             num++;
         }
+        progressBar.done();
     }
 
     /// 单点最小二乘匹配
