@@ -138,7 +138,7 @@ namespace photogrammetry
                 for (int i = r; i < dstImgCopy.rows - r; i++)
                     for (int j = r; j < dstImgCopy.cols - r; j++)
                     {
-                        rectDst = cv::Rect(j, i, windowSize, windowSize);
+                        rectDst = cv::Rect(j - r, i - r, windowSize, windowSize);
                         windowDst = dstImgCopy(rectDst);
                         idx = computeCorrelationIdx(windowSrc, windowDst);
                         if (idx > maxIdx)
