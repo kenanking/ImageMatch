@@ -49,6 +49,9 @@ namespace photogrammetry
     {
         std::vector<cv::Point> corners;
 
+        if (windowSize % 2 == 0)
+            windowSize += 1;
+
         cv::Mat img = srcImg.clone();
         if (img.channels() != 1)
             cv::cvtColor(img, img, cv::COLOR_RGB2GRAY);

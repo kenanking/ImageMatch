@@ -263,7 +263,8 @@ namespace photogrammetry
         h1 = 1;
 
         double xs = 0.0, ys = 0.0;
-        double correlationIdx;
+        double currentCorrelationIdx, bestCorrelationIdx = 0.0;
+        cv::Point2d bestPt;
 
         for (int iter = 0; iter < 50; iter++) // 设定最大迭代次数不超过50次
         {
@@ -282,6 +283,7 @@ namespace photogrammetry
                     int I = floor(m);
                     int J = floor(n);
 
+                    // 如果当前的点在图像的边界附近，就舍弃当前点，因为后面求导会出现问题
                     if (I < 1 || I > dstImgCopy.rows || J < 1 || J > dstImgCopy.cols)
                         continue;
 
@@ -320,7 +322,7 @@ namespace photogrammetry
             if (num < 8) // 无法求解法方程
                 return false;
 
-            correlationIdx = computeCorrelationIdx(windowSrc, windowDst);
+            currentCorrelationIdx = computeCorrelationIdx(windowSrc, windowDst);
 
             // 计算变形参数
             x = (A.transpose() * A).inverse() * (A.transpose() * L);
@@ -341,18 +343,25 @@ namespace photogrammetry
             xs = a0 + a1 * xt + a2 * yt;
             ys = b0 + b1 * xt + b2 * yt;
 
-            if (correlationIdx > threshold)
+            if (currentCorrelationIdx > bestCorrelationIdx)
             {
-                match.dstPt.x = ys;
-                match.dstPt.y = xs;
-                match.dist = correlationIdx;
+                bestPt.x = ys;
+                bestPt.y = xs;
+                bestCorrelationIdx = currentCorrelationIdx;
+            }
+
+            if (bestCorrelationIdx > threshold)
+            {
+                match.dstPt.x = bestPt.x;
+                match.dstPt.y = bestPt.y;
+                match.dist = bestCorrelationIdx;
                 return true;
             }
         }
 
-        match.dstPt.x = ys;
-        match.dstPt.y = xs;
-        match.dist = correlationIdx;
+        match.dstPt.x = bestPt.x;
+        match.dstPt.y = bestPt.y;
+        match.dist = bestCorrelationIdx;
         return true;
     }
 }
