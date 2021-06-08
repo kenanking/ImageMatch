@@ -345,17 +345,38 @@ namespace photogrammetry
 
             currentCorrelationIdx = computeCorrelationIdx(windowSrc, windowDst);
 
+            // std::cout << "Iter time: " << iter << std::endl;
+            // std::cout << "a0 = " << a0 << "\ta1 = " << a1 << "\ta2 = " << a2 << std::endl;
+            // std::cout << "b0 = " << b0 << "\tb1 = " << b1 << "\tb2 = " << b2 << std::endl;
+            // std::cout << "h0 = " << h0 << "\th1 = " << h1 << std::endl;
+            // std::cout << "idx = " << currentCorrelationIdx << std::endl;
+
+            // std::cout << "A: \n" << A << std::endl;
+            // std::cout << "L: \n" << L << std::endl;
+
             // 计算变形参数
             x = (A.transpose() * A).inverse() * (A.transpose() * L);
+            // std::cout << "x: \n" << x << std::endl;
+            std::cout << std::endl;
 
-            a0 = a0 + x(2, 0) + a0 * x(3, 0) + b0 * x(4, 0);
-            a1 = a1 + a1 * x(3, 0) + b1 * x(4, 0);
-            a2 = a2 + a2 * x(3, 0) + b2 * x(4, 0);
-            b0 = b0 + x(5, 0) + a0 * x(6, 0) + b0 * x(7, 0);
-            b1 = b1 + a1 * x(6, 0) + b1 * x(7, 0);
-            b2 = b2 + a2 * x(6, 0) + b2 * x(7, 0);
-            h0 = h0 + x(0, 0) + h0 * x(1, 0);
-            h1 = h1 + h1 * x(1, 0);
+
+            double a0_old = a0;
+            double a1_old = a1;
+            double a2_old = a2;
+            double b0_old = b0;
+            double b1_old = b1;
+            double b2_old = b2;
+            double h0_old = h0;
+            double h1_old = h1;
+
+            a0 = a0_old + x(2, 0) + a0_old * x(3, 0) + b0_old * x(4, 0);
+            a1 = a1_old + a1_old * x(3, 0) + b1_old * x(4, 0);
+            a2 = a2_old + a2_old * x(3, 0) + b2_old * x(4, 0);
+            b0 = b0_old + x(5, 0) + a0_old * x(6, 0) + b0_old * x(7, 0);
+            b1 = b1_old + a1_old * x(6, 0) + b1_old * x(7, 0);
+            b2 = b2_old + a2_old * x(6, 0) + b2_old * x(7, 0);
+            h0 = h0_old + x(0, 0) + h0_old * x(1, 0);
+            h1 = h1_old + h1_old * x(1, 0);
 
             // 计算最佳匹配点位
             double xt = xNumerator / xDenominator;
