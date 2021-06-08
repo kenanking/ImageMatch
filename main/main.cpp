@@ -22,17 +22,21 @@
 int main(int argc, char **argv)
 {
     // ========================== 相关参数设置 ==============================
-    std::string img_1_path = "../img/LOR50.bmp";
-    std::string img_2_path = "../img/LOR49.bmp";
-    // std::string img_1_path = "../img/yosemite1.jpg";
-    // std::string img_2_path = "../img/yosemite2.jpg";
+    // std::string img_1_path = "../img/LOR50.bmp";
+    // std::string img_2_path = "../img/LOR49.bmp";
+    std::string img_1_path = "../img/yosemite1.jpg";
+    std::string img_2_path = "../img/yosemite2.jpg";
+    // std::string img_1_path = "../img/img1.jpg";
+    // std::string img_2_path = "../img/img2.jpg";
 
     int corner_threshold = 700; // Moravec角点检测阈值
 
-    std::string img_1_corner_path = "../result/LOR50_corner.jpg";
-    std::string img_2_corner_path = "../result/LOR49_corner.jpg";
-    // std::string img_1_corner_path = "../result/yosemite1_corner.jpg";
-    // std::string img_2_corner_path = "../result/yosemite2_corner.jpg";
+    // std::string img_1_corner_path = "../result/LOR50_corner.jpg";
+    // std::string img_2_corner_path = "../result/LOR49_corner.jpg";
+    std::string img_1_corner_path = "../result/yosemite1_corner.jpg";
+    std::string img_2_corner_path = "../result/yosemite2_corner.jpg";
+    // std::string img_1_corner_path = "../result/img1_corner.jpg";
+    // std::string img_2_corner_path = "../result/img2_corner.jpg";
 
     int corr_window_size = 25;    // 相关系数匹配窗口大小
     double corr_threshold = 0.85; // 相关系数匹配阈值
@@ -40,17 +44,22 @@ int main(int argc, char **argv)
     int lsq_window_size = 5;     // 最小二乘匹配窗口大小
     double lsq_threshold = 0.95; //最小二乘匹配窗口大小
 
-    std::string img_match_path = "../result/LOR_corr_match_improved.jpg";
+    // std::string img_match_path = "../result/LOR_corr_match_improved.jpg";
     // std::string img_match_path = "../result/LOR_corr_match.jpg";
     // std::string img_match_path = "../result/yosemite_corr_match_improved.jpg";
-    // std::string img_match_path = "../result/yosemite_corr_match.jpg";
+    std::string img_match_path = "../result/yosemite_corr_match.jpg";
+    // std::string img_match_path = "../result/IMG_corr_match_improved.jpg";
 
-    std::string result_corr_path = "../result/LOR_corr_result_improved.txt";
-    std::string result_lsq_path = "../result/LOR_lsq_result_improved.txt";
+    // std::string result_corr_path = "../result/LOR_corr_result_improved.txt";
+    // std::string result_lsq_path = "../result/LOR_lsq_result_improved.txt";
+    // std::string result_corr_path = "../result/LOR_corr_result.txt";
+    // std::string result_lsq_path = "../result/LOR_lsq_result.txt";
     // std::string result_corr_path = "../result/yosemite_corr_result_improved.txt";
     // std::string result_lsq_path = "../result/yosemite_lsq_result_improved.txt";
-    // std::string result_corr_path = "../result/yosemite_corr_result.txt";
-    // std::string result_lsq_path = "../result/yosemite_lsq_result.txt";
+    std::string result_corr_path = "../result/yosemite_corr_result.txt";
+    std::string result_lsq_path = "../result/yosemite_lsq_result.txt";
+    // std::string result_corr_path = "../result/IMG_corr_result_improved.txt";
+    // std::string result_lsq_path = "../result/IMG_lsq_result_improved.txt";
 
     // =====================================================================
 
@@ -100,8 +109,8 @@ int main(int argc, char **argv)
     std::vector<photogrammetry::Match> corrMatches;
 
     t.tic();
-    // corrMatcher.match(img_1, img_2, corners_1, corrMatches);
-    corrMatcher.matchImproved(img_1, img_2, corners_1, corners_2, corrMatches);
+    corrMatcher.match(img_1, img_2, corners_1, corrMatches);
+    // corrMatcher.matchImproved(img_1, img_2, corners_1, corners_2, corrMatches);
     time = t.toc();
 
     std::cout << "相关系数匹配窗口大小：" << corr_window_size << "\t阈值：" << corr_threshold << std::endl;

@@ -357,7 +357,7 @@ namespace photogrammetry
             // 计算变形参数
             x = (A.transpose() * A).inverse() * (A.transpose() * L);
             // std::cout << "x: \n" << x << std::endl;
-            std::cout << std::endl;
+            // std::cout << std::endl;
 
 
             double a0_old = a0;
