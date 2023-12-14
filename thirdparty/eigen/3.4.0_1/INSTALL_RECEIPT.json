@@ -1,0 +1,41 @@
+{
+  "homebrew_version": "3.6.20",
+  "used_options": [
+
+  ],
+  "unused_options": [
+
+  ],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "loaded_from_api": null,
+  "installed_as_dependency": true,
+  "installed_on_request": true,
+  "changed_files": null,
+  "time": 1674875737,
+  "source_modified_time": 0,
+  "compiler": "clang",
+  "aliases": [
+
+  ],
+  "runtime_dependencies": [
+
+  ],
+  "source": {
+    "path": "/opt/homebrew/Library/Taps/homebrew/homebrew-core/Formula/eigen.rb",
+    "tap": "homebrew/core",
+    "tap_git_head": "84f3ab6b1032a4ddab1d8a0096077339da2d920f",
+    "spec": "stable",
+    "versions": {
+      "stable": "3.4.0",
+      "head": null,
+      "version_scheme": 0
+    }
+  },
+  "arch": "arm64",
+  "built_on": {
+    "os": "Macintosh",
+    "os_version": "macOS 13",
+    "cpu_family": "arm_firestorm_icestorm"
+  }
+}

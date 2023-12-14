@@ -52,3 +52,6 @@ _deps
 
 # Ignore vscode configure files
 /.vscode
+.DS_Store
+._.DS_Store
+.brew/
